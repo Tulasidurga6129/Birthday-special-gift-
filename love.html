@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday My Love ❤️</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Imported Playfair Display font here */
+        @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(-45deg, #ff758c, #ff7eb3, #93291e, #ed213a);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .romantic-font {
+            font-family: 'Great Vibes', cursive;
+        }
+
+        /* Added classic-serif rule to apply the font style */
+        .classic-serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .glass-romantic {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* 3D Flip Cards */
+        .card-container { perspective: 1000px; }
+        .card-inner { 
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            transform-style: preserve-3d; 
+        }
+        .card-container:hover .card-inner, .card-container.flipped .card-inner { transform: rotateY(180deg); }
+        .card-front, .card-back { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+        .card-back { transform: rotateY(180deg); }
+
+        /* Floating Hearts Layer */
+        .floating-heart {
+            position: fixed;
+            pointer-events: none;
+            z-index: 10;
+            animation: floatUpwards var(--fall-duration, 6s) linear infinite;
+            transform: translateY(100vh);
+        }
+        @keyframes floatUpwards {
+            0% { transform: translateY(105vh) scale(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.4; }
+            100% { transform: translateY(-10vh) scale(var(--heart-scale, 1)) rotate(360deg); opacity: 0; }
+        }
+
+        /* Pulsing Glow Animation */
+        .pulse-heart {
+            animation: heartbeat 1.4s infinite alternate;
+        }
+        @keyframes heartbeat {
+            0% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(255,255,255,0.6)); }
+            100% { transform: scale(1.12); filter: drop-shadow(0 0 30px rgba(255,255,0,0.8)); }
+        }
+
+        /* Custom scrollbar for an elegant feel */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 4px; }
+    </style>
+</head>
+<body class="text-white min-h-screen flex flex-col justify-between">
+
+    <div id="music-container" class="fixed bottom-5 right-5 z-50 glass-romantic p-3 rounded-full shadow-2xl flex items-center gap-3 hidden">
+        <button id="music-toggle" class="bg-white text-red-500 p-3 rounded-full hover:scale-110 transition-transform shadow-md cursor-pointer flex items-center justify-center w-10 h-10">
+            <i class="fas fa-play" id="music-icon"></i>
+        </button>
+        <span class="text-xs font-medium pr-2 select-none text-white">Our Song 🎵</span>
+        <audio id="bg-music" loop src="amadi.mp3"></audio>
+    </div>
+
+    <div id="intro-overlay" class="fixed inset-0 bg-neutral-950 z-50 flex flex-col justify-center items-center text-center p-6 transition-all duration-1000">
+        <div class="space-y-8 max-w-lg">
+            <div class="text-8xl pulse-heart cursor-pointer" onclick="startSurprise()">❤️</div>
+            <h1 class="text-4xl md:text-5xl font-bold tracking-wide text-rose-200">Hey Beautiful...</h1>
+            <p class="text-neutral-400 text-sm md:text-base leading-relaxed">
+                I made something completely custom to show you exactly how much you mean to me. Turn up your sound and tap the heart below to step inside your birthday surprise.
+            </p>
+            <div>
+                <button onclick="startSurprise()" class="px-8 py-4 bg-gradient-to-r from-rose-500 via-red-500 to-pink-500 text-white font-bold rounded-full text-lg shadow-2xl cursor-pointer transform hover:scale-105 active:scale-95 transition-all tracking-wider uppercase">
+                    Unlock My Heart ✨
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <main id="main-content" class="opacity-0 transition-opacity duration-1000 max-w-6xl mx-auto px-4 py-12 space-y-28 w-full">
+        
+        <section class="text-center space-y-4 pt-12 relative flex flex-col items-center">
+            <span class="text-xl block tracking-widest uppercase font-semibold text-rose-200 animate-pulse">🎂 Happy Birthday My Love</span>
+            <h2 class="text-6xl md:text-8xl font-bold classic-serif italic text-rose-100 drop-shadow-lg">
+                BANNU(Bujjodha)
+            </h2>
+            <p id="typewriter" class="text-lg md:text-2xl max-w-xl mx-auto font-light leading-relaxed min-h-[56px] text-rose-100 italic drop-shadow-sm">
+            </p>
+        </section>
+
+        <section class="space-y-8">
+            <div class="text-center space-y-2">
+                <h3 class="text-3xl md:text-4xl font-bold tracking-tight text-white drop-shadow-md">📸 Our Memories</h3>
+                <p class="text-xs md:text-sm text-rose-100 opacity-90">Beautiful snapshots of our unforgettable journey together.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white p-3 pb-6 text-neutral-800 shadow-2xl rounded-2xl transform -rotate-2 hover:rotate-0 hover:scale-105 transition-all duration-300">
+                    <div class="h-72 w-full bg-cover bg-center rounded-xl" style="background-image: url('./photo1.jpeg'), url('https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=600');"></div>
+                    <p class="romantic-font text-2xl text-center mt-3 text-rose-600">Where it started...</p>
+                </div>
+                <div class="bg-white p-3 pb-6 text-neutral-800 shadow-2xl rounded-2xl transform rotate-2 hover:rotate-0 hover:scale-105 transition-all duration-300">
+                    <div class="h-72 w-full bg-cover bg-center rounded-xl" style="background-image: url('./photo2.jpeg'), url('https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=600');"></div>
+                    <p class="romantic-font text-2xl text-center mt-3 text-rose-600">Your beautiful smile</p>
+                </div>
+                <div class="bg-white p-3 pb-6 text-neutral-800 shadow-2xl rounded-2xl transform -rotate-1 hover:rotate-0 hover:scale-105 transition-all duration-300">
+                    <div class="h-72 w-full bg-cover bg-center rounded-xl" style="background-image: url('./photo3.jpeg'), url('https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600');"></div>
+                    <p class="romantic-font text-2xl text-center mt-3 text-rose-600">Sweetest moments</p>
+                </div>
+                <div class="bg-white p-3 pb-6 text-neutral-800 shadow-2xl rounded-2xl transform rotate-3 hover:rotate-0 hover:scale-105 transition-all duration-300">
+                    <div class="h-72 w-full bg-cover bg-center rounded-xl" style="background-image: url('./photo4.jpeg'), url('https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=600');"></div>
+                    <p class="romantic-font text-2xl text-center mt-3 text-rose-600">Forever & Always ❤️</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="space-y-8">
+            <div class="text-center space-y-2">
+                <h3 class="text-3xl md:text-4xl font-bold tracking-tight">💌 10 Reasons Why You're Special</h3>
+                <p class="text-xs md:text-sm text-rose-200 opacity-90">Hover or tap each card to reveal my secrets</p>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6" id="love-cards-grid">
+            </div>
+        </section>
+
+        <section class="glass-romantic rounded-3xl p-8 md:p-12 text-center max-w-3xl mx-auto space-y-8 shadow-2xl relative border border-white/20">
+            <h3 class="text-4xl md:text-5xl font-bold romantic-font text-rose-200">A Promise To You</h3>
+            
+            <div class="pt-2">
+                <button onclick="triggerUltimateSurprise()" class="px-8 py-4 bg-white text-rose-600 font-bold rounded-full text-base shadow-xl hover:shadow-2xl hover:scale-110 active:scale-95 transition-all cursor-pointer uppercase tracking-wider">
+                    🎉 Click For Birthday Surprise
+                </button>
+            </div>
+
+            <div id="finalMessage" class="hidden text-xl md:text-2xl leading-relaxed font-light text-rose-50 pt-6 border-t border-white/10 max-w-xl mx-auto space-y-4 animate-[fadeIn_1.5s_ease-out]">
+                <p class="romantic-font text-4xl text-yellow-200 font-semibold">✨ I Love You ✨</p>
+                <p class="text-base md:text-lg">
+                    "Loving you is the easiest thing I have ever done. Thank you for being my safe space, my biggest laugh, my comfort on hard days, and my favorite adventure. May your year be filled with happiness, success, deep laughter, and beautiful memories. No matter where life takes us, my heart is completely yours."
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-10 text-xs text-rose-200 opacity-70 tracking-widest select-none">
+        FOREVER YOURS • MADE WITH PURE LOVE
+    </footer>
+
+    <script>
+        const loveReasons = [
+            { icon: "fa-heart", title: "Reason 1", text: "Your smile brightens my day and completely melts away all my worries." },
+            { icon: "fa-handshake", title: "Reason 2", text: "You always support me and push me to be the greatest version of myself." },
+            { icon: "fa-wand-magic-sparkles", title: "Reason 3", text: "You make every little moment together feel incredibly magical and special." },
+            { icon: "fa-crown", title: "Reason 4", text: "Your deep kindness and golden soul inspire me every single day." },
+            { icon: "fa-compress", title: "Reason 5", text: "You understand me completely, even when I can't find the words to say it." },
+            { icon: "fa-mug-hot", title: "Reason 6", text: "You bring a sense of absolute calm and pure peace to my messy heart." },
+            { icon: "fa-face-laugh-beam", title: "Reason 7", text: "Your infectious laugh is genuinely my absolute favorite sound in the world." },
+            { icon: "fa-star", title: "Reason 8", text: "You motivate me to reach for the stars and stay strong on hard days." },
+            { icon: "fa-comments", title: "Reason 9", text: "You turn ordinary, basic days into unforgettable lifetime memories." },
+            { icon: "fa-infinity", title: "Reason 10", text: "Because you are simply amazing, my soulmate, and my entire universe ❤️" }
+        ];
+
+        const loveQuotes = [
+            "Today is all about you. Thank you for making life beautiful... ✨",
+            "You are my today, and all of my tomorrows... ❤️",
+            "In a sea of people, my eyes will always search for you... 🌹",
+            "Every love story is beautiful, but ours is my absolute favorite... 👑"
+        ];
+        
+        let quoteIndex = 0;
+        let charIndex = 0;
+        const typewriterElement = document.getElementById('typewriter');
+
+        function startTypewriter() {
+            if (charIndex < loveQuotes[quoteIndex].length) {
+                typewriterElement.innerHTML += loveQuotes[quoteIndex].charAt(charIndex);
+                charIndex++;
+                setTimeout(startTypewriter, 60);
+            } else {
+                setTimeout(eraseTypewriter, 3500);
+            }
+        }
+
+        function eraseTypewriter() {
+            if (charIndex > 0) {
+                typewriterElement.innerHTML = loveQuotes[quoteIndex].substring(0, charIndex - 1);
+                charIndex--;
+                setTimeout(eraseTypewriter, 30);
+            } else {
+                quoteIndex = (quoteIndex + 1) % loveQuotes.length;
+                setTimeout(startTypewriter, 400);
+            }
+        }
+
+        const cardsGrid = document.getElementById('love-cards-grid');
+        loveReasons.forEach((item, idx) => {
+            const container = document.createElement('div');
+            container.className = "card-container h-48 cursor-pointer w-full";
+            container.onclick = () => container.classList.toggle('flipped');
+            
+            container.innerHTML = `
+                <div class="card-inner w-full h-full relative duration-500">
+                    <div class="card-front glass-romantic absolute inset-0 rounded-2xl flex flex-col justify-center items-center p-4 text-center shadow-lg border border-white/20">
+                        <span class="text-[10px] font-bold text-rose-200 tracking-widest uppercase mb-1">${item.title}</span>
+                        <i class="fas ${item.icon} text-3xl text-rose-300 my-2 drop-shadow-[0_0_10px_rgba(244,63,94,0.6)]"></i>
+                        <h4 class="font-semibold text-sm tracking-wide text-white">Tap to Peek</h4>
+                    </div>
+                    <div class="card-back bg-white text-neutral-800 absolute inset-0 rounded-2xl flex flex-col justify-center items-center p-5 text-center shadow-2xl border-2 border-rose-400">
+                        <p class="text-xs md:text-sm font-medium leading-relaxed text-neutral-700">${item.text}</p>
+                    </div>
+                </div>
+            `;
+            cardsGrid.appendChild(container);
+        });
+
+        function burstHearts() {
+            const defaults = { spread: 360, ticks: 120, gravity: 0.45, decay: 0.94, startVelocity: 35, colors: ['#ff4d6d', '#ff758f', '#ffccd5', '#ffb3c1', '#fae0e4'] };
+            confetti({ ...defaults, particleCount: 70, scalar: 1.3, shapes: ['heart'] });
+            confetti({ ...defaults, particleCount: 40, scalar: 1.6, shapes: ['heart'] });
+        }
+
+        function generateHearts() {
+            const heartIcons = ['❤️', '💖', '💝', '💕', '✨', '🎂'];
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'floating-heart font-sans';
+                    heart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.setProperty('--fall-duration', (Math.random() * 4 + 4) + 's');
+                    heart.style.setProperty('--heart-scale', Math.random() * 1.4 + 0.6);
+                    document.body.appendChild(heart);
+                    setTimeout(() => heart.remove(), 7000);
+                }, i * 400);
+            }
+        }
+
+        function triggerUltimateSurprise() {
+            const msgBlock = document.getElementById("finalMessage");
+            msgBlock.classList.remove('hidden');
+            confetti({ particleCount: 350, spread: 180, origin: { y: 0.55 } });
+            burstHearts();
+            msgBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function startSurprise() {
+            const intro = document.getElementById('intro-overlay');
+            intro.classList.add('opacity-0', 'pointer-events-none');
+            
+            const main = document.getElementById('main-content');
+            main.classList.remove('opacity-0');
+            
+            const musicContainer = document.getElementById('music-container');
+            const music = document.getElementById('bg-music');
+            const icon = document.getElementById('music-icon');
+            
+            musicContainer.classList.remove('hidden');
+            music.play().then(() => {
+                icon.className = 'fas fa-pause';
+            }).catch(() => console.log("Autoplay configuration initialized."));
+
+            document.getElementById('music-toggle').onclick = function() {
+                if (music.paused) { music.play(); icon.className = 'fas fa-pause'; }
+                else { music.pause(); icon.className = 'fas fa-play'; }
+            };
+
+            burstHearts();
+            generateHearts();
+            startTypewriter();
+            setInterval(generateHearts, 6000);
+        }
+    </script>
+</body>
+</html>
